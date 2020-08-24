@@ -1,7 +1,5 @@
 package com.mashibing.tank;
 
-import com.mashibing.tank.abstractfactory.BaseTank;
-
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
@@ -20,7 +18,7 @@ import java.util.Random;
  * ---------------------------------------------------------*
  * 2020/8/6    tianhr            v1.0.0               修改原因
  */
-public class Tank extends BaseTank{
+public class Tank{
 
     public int x ,y;
     public Dir dir = Dir.DOWN;
