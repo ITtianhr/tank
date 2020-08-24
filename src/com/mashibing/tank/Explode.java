@@ -1,5 +1,7 @@
 package com.mashibing.tank;
 
+import com.mashibing.tank.abstractfactory.BaseExplode;
+
 import java.awt.*;
 
 /**
@@ -16,7 +18,7 @@ import java.awt.*;
  * ---------------------------------------------------------*
  * 2020/8/6    tianhr            v1.0.0               修改原因
  */
-public class Expload {
+public class Explode extends BaseExplode{
 
     public static int WIDTH = ResourceMgr.exploads[0].getWidth();
     public static int HEIGHT = ResourceMgr.exploads[0].getHeight();
@@ -28,7 +30,7 @@ public class Expload {
     private int step = 0;
 
 
-    public Expload(int x, int y, TankFrame tf) {
+    public Explode(int x, int y, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.tf = tf;

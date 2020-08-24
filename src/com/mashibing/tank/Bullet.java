@@ -1,5 +1,7 @@
 package com.mashibing.tank;
 
+import com.mashibing.tank.abstractfactory.BaseBullet;
+
 import java.awt.*;
 
 /**
@@ -16,7 +18,7 @@ import java.awt.*;
  * ---------------------------------------------------------*
  * 2020/8/6    tianhr            v1.0.0               修改原因
  */
-public class Bullet {
+public class Bullet extends BaseBullet{
 
     private int x ,y;
     private Dir dir;
@@ -56,6 +58,8 @@ public class Bullet {
         rect.y = this.y;
         rect.width = WIDTH;
         rect.height = HEIGHT;
+
+        tf.bulletList.add(this);
     }
 
     public void paint(Graphics g) {
@@ -115,9 +119,9 @@ public class Bullet {
         if (rect.intersects(tank.rect)){//判断是否相交
             tank.die();
             this.die();
-            int ex = tank.getX() + Tank.WIDTH/2 - Expload.WIDTH/2;
-            int ey = tank.getY() + Tank.HEIGHT/2 - Expload.HEIGHT/2;
-            tf.exploads.add(new Expload(ex,ey,tf));
+            int ex = tank.getX() + Tank.WIDTH/2 - Explode.WIDTH/2;
+            int ey = tank.getY() + Tank.HEIGHT/2 - Explode.HEIGHT/2;
+            tf.exploads.add(tf.gf.createExplode(ex, ey, tf));
         }
     }
 

@@ -1,6 +1,9 @@
 package com.mashibing.tank;
 
+import com.mashibing.tank.abstractfactory.BaseTank;
+
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
 /**
@@ -17,12 +20,12 @@ import java.util.Random;
  * ---------------------------------------------------------*
  * 2020/8/6    tianhr            v1.0.0               修改原因
  */
-public class Tank {
+public class Tank extends BaseTank{
 
-    private int x ,y;
-    private Dir dir = Dir.DOWN;
+    public int x ,y;
+    public Dir dir = Dir.DOWN;
     private static final int SPEED = 2;
-    private Group group = Group.BAD;
+    public Group group = Group.BAD;
 
     public static final int WIDTH = ResourceMgr.goodTankU.getWidth();
     public static final int HEIGHT = ResourceMgr.goodTankU.getHeight();
@@ -32,8 +35,10 @@ public class Tank {
     Random random = new Random();
 
     private boolean move = true;
-    private TankFrame tf = null ;
+    public TankFrame tf = null ;
     private Boolean living = true;
+
+    FireStrategy fs = new DefaultFireStrategy();
 
     public Group getGroup() {
         return group;
@@ -86,6 +91,26 @@ public class Tank {
         rect.y = this.y;
         rect.width = WIDTH;
         rect.height = HEIGHT;
+
+        if (Group.GOOD == group){
+            String goodFSName = (String)PropertyMgr.get("goodFs");
+            try {
+                fs = (FireStrategy) Class.forName(goodFSName).getDeclaredConstructor().newInstance();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }else{
+            fs = new DefaultFireStrategy();
+        }
+
     }
 
     public void paint(Graphics g) {
@@ -153,9 +178,7 @@ public class Tank {
 
     //开火，发射炮弹
     public void fire() {
-        int bx = this.x + Tank.WIDTH/2 - Bullet.WIDTH/2;
-        int by = this.y + Tank.HEIGHT/2 - Bullet.HEIGHT/2;
-        tf.bulletList.add(new Bullet(bx,by,this.dir,this.group,this.tf));
+        fs.fire(this);
     }
 
     public void die() {
