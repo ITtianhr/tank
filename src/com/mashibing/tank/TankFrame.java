@@ -24,13 +24,9 @@ import java.util.List;
  */
 public class TankFrame extends Frame {
 
-    Tank myTank = new Tank(200,300,Dir.DOWN, Group.GOOD,this);
-    public List<Bullet> bulletList = new ArrayList<Bullet>();
-    public List<Tank> tanks = new ArrayList<>();
-    public List<Explode> exploads = new ArrayList<>();
-    Bullet bullet = new Bullet(200,200,Dir.DOWN,Group.BAD,this);
-
     static final int GAME_WIDTH = 1920, GAME_HEIGHT = 1080;
+
+    GameModel gm = new GameModel();
 
     public  TankFrame(){
         setSize(GAME_WIDTH,GAME_HEIGHT);
@@ -65,34 +61,7 @@ public class TankFrame extends Frame {
 
     @Override
     public  void paint(Graphics g){
-
-        Color c = g.getColor();
-        g.setColor(Color.WHITE);
-        g.drawString("bullets:" + bulletList.size(), 10, 60);
-        g.drawString("tanks:" + tanks.size(), 10, 80);
-        g.drawString("exploads:" + exploads.size(), 10, 100);
-        g.setColor(c);
-
-        myTank.paint(g);
-        for (int i = 0; i < bulletList.size(); i++) {
-            bulletList.get(i).paint(g);
-        }
-        for (int i = 0; i < tanks.size(); i++) {
-            tanks.get(i).paint(g);
-        }
-        for (int i = 0; i < exploads.size(); i++) {
-            exploads.get(i).paint(g);
-        }
-
-        //碰撞检测
-        for (int i = 0; i <bulletList.size() ; i++) {
-            for (int j = 0; j <tanks.size() ; j++) {
-                bulletList.get(i).collideWith(tanks.get(j));
-            }
-        }
-
-//        x+=10;
-//        y+=10;
+        gm.paint(g);
     }
 
     class MyKeyListener extends KeyAdapter{
@@ -145,7 +114,7 @@ public class TankFrame extends Frame {
                     bD = false;
                     break;
                 case KeyEvent.VK_CONTROL:
-                    myTank.fire();
+                    gm.getMyTank().fire();
                     break;
                 default:
                     break;
@@ -154,6 +123,7 @@ public class TankFrame extends Frame {
         }
 
         private void setMainTankDir() {
+            Tank myTank = gm.myTank;
             if (!bL  && !bU && !bR  && !bD) myTank.setMove(false);
             else {
                 myTank.setMove(true);

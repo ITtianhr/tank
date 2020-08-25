@@ -24,7 +24,7 @@ public class Tank{
     public Dir dir = Dir.DOWN;
     private static final int SPEED = 2;
     public Group group = Group.BAD;
-
+    GameModel gm;
     public static final int WIDTH = ResourceMgr.goodTankU.getWidth();
     public static final int HEIGHT = ResourceMgr.goodTankU.getHeight();
 
@@ -33,7 +33,6 @@ public class Tank{
     Random random = new Random();
 
     private boolean move = true;
-    public TankFrame tf = null ;
     private Boolean living = true;
 
     FireStrategy fs = new DefaultFireStrategy();
@@ -78,12 +77,12 @@ public class Tank{
         this.dir = dir;
     }
 
-    public Tank(int x, int y, Dir dir, Group group, TankFrame tf) {
+    public Tank(int x, int y, Dir dir, Group group, GameModel gm) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
-        this.tf = tf;
+        this.gm = gm;
 
         rect.x = this.x;
         rect.y = this.y;
@@ -112,7 +111,7 @@ public class Tank{
     }
 
     public void paint(Graphics g) {
-        if (!living) tf.tanks.remove(this);
+        if (!living) gm.tanks.remove(this);
 //        Color c = g.getColor();
 //        g.setColor(Color.pink);
 //        g.fillRect(x,y,50,50);

@@ -24,21 +24,21 @@ public class Explode{
 
     private int x ,y;
 //    private Boolean living = true;
-    private TankFrame tf = null;
+    private GameModel gm = null;
     private int step = 0;
 
 
-    public Explode(int x, int y, TankFrame tf) {
+    public Explode(int x, int y, GameModel gm) {
         this.x = x;
         this.y = y;
-        this.tf = tf;
+        this.gm = gm;
         new Thread(()->new Audio("audio/explode.wav").play()).start();
     }
 
     public void paint(Graphics g) {
         g.drawImage(ResourceMgr.exploads[step++],x,y,null);
         if (step>=ResourceMgr.exploads.length){
-            tf.exploads.remove(this);
+            gm.exploads.remove(this);
         }
     }
 
