@@ -25,8 +25,7 @@ import java.util.List;
 public class TankFrame extends Frame {
 
     static final int GAME_WIDTH = 1920, GAME_HEIGHT = 1080;
-
-    GameModel gm = new GameModel();
+    GameModel gm = GameModel.getInstance();
 
     public  TankFrame(){
         setSize(GAME_WIDTH,GAME_HEIGHT);
@@ -114,7 +113,7 @@ public class TankFrame extends Frame {
                     bD = false;
                     break;
                 case KeyEvent.VK_CONTROL:
-                    gm.getMyTank().fire();
+                    GameModel.getInstance().getMyTank().fire();
                     break;
                 default:
                     break;
@@ -123,7 +122,7 @@ public class TankFrame extends Frame {
         }
 
         private void setMainTankDir() {
-            Tank myTank = gm.myTank;
+            Tank myTank = GameModel.getInstance().myTank;
             if (!bL  && !bU && !bR  && !bD) myTank.setMove(false);
             else {
                 myTank.setMove(true);

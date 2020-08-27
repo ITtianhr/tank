@@ -18,17 +18,16 @@ import java.util.Random;
  * ---------------------------------------------------------*
  * 2020/8/6    tianhr            v1.0.0               修改原因
  */
-public class Tank{
+public class Tank extends GameObject{
 
     public int x ,y;
     public Dir dir = Dir.DOWN;
     private static final int SPEED = 2;
     public Group group = Group.BAD;
-    GameModel gm;
     public static final int WIDTH = ResourceMgr.goodTankU.getWidth();
     public static final int HEIGHT = ResourceMgr.goodTankU.getHeight();
-
-    Rectangle rect = new Rectangle();
+    int oldX, oldY;
+    public Rectangle rect = new Rectangle();
 
     Random random = new Random();
 
@@ -36,6 +35,14 @@ public class Tank{
     private Boolean living = true;
 
     FireStrategy fs = new DefaultFireStrategy();
+
+    public Rectangle getRect() {
+        return rect;
+    }
+
+    public void setRect(Rectangle rect) {
+        this.rect = rect;
+    }
 
     public Group getGroup() {
         return group;
@@ -77,12 +84,12 @@ public class Tank{
         this.dir = dir;
     }
 
-    public Tank(int x, int y, Dir dir, Group group, GameModel gm) {
+
+    public Tank(int x, int y, Dir dir, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
-        this.gm = gm;
 
         rect.x = this.x;
         rect.y = this.y;
@@ -108,10 +115,17 @@ public class Tank{
             fs = new DefaultFireStrategy();
         }
 
+        GameModel.getInstance().add(this);
+
+    }
+
+    public void back() {
+        x = oldX;
+        y = oldY;
     }
 
     public void paint(Graphics g) {
-        if (!living) gm.tanks.remove(this);
+        if (!living) GameModel.getInstance().remove(this);
 //        Color c = g.getColor();
 //        g.setColor(Color.pink);
 //        g.fillRect(x,y,50,50);
@@ -137,6 +151,9 @@ public class Tank{
     }
 
     private void move() {
+        //记录移动之前的位置
+        oldX = x;
+        oldY = y;
         if(!move) return;
         switch (dir) {
             case LEFT:
@@ -167,6 +184,16 @@ public class Tank{
         if (this.y <32) y = 32;
         if (this.x > TankFrame.GAME_WIDTH - WIDTH - 2) x = TankFrame.GAME_WIDTH - WIDTH - 2;
         if (this.y > TankFrame.GAME_HEIGHT - HEIGHT - 2) y =TankFrame.GAME_HEIGHT - HEIGHT - 2;
+    }
+
+    @Override
+    public int getWidth() {
+        return WIDTH;
+    }
+
+    @Override
+    public int getHeight() {
+        return HEIGHT;
     }
 
     private void randomDir() {

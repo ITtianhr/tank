@@ -16,7 +16,7 @@ import java.awt.*;
  * ---------------------------------------------------------*
  * 2020/8/6    tianhr            v1.0.0               修改原因
  */
-public class Explode{
+public class Explode extends GameObject{
 
     public static int WIDTH = ResourceMgr.exploads[0].getWidth();
     public static int HEIGHT = ResourceMgr.exploads[0].getHeight();
@@ -24,22 +24,33 @@ public class Explode{
 
     private int x ,y;
 //    private Boolean living = true;
-    private GameModel gm = null;
+//    private GameModel gm = null;
     private int step = 0;
 
 
-    public Explode(int x, int y, GameModel gm) {
+    public Explode(int x, int y) {
         this.x = x;
         this.y = y;
-        this.gm = gm;
         new Thread(()->new Audio("audio/explode.wav").play()).start();
+        GameModel.getInstance().add(this);
     }
 
     public void paint(Graphics g) {
         g.drawImage(ResourceMgr.exploads[step++],x,y,null);
+        System.out.println("11111");
         if (step>=ResourceMgr.exploads.length){
-            gm.exploads.remove(this);
+            GameModel.getInstance().remove(this);
         }
+    }
+
+    @Override
+    public int getWidth() {
+        return WIDTH;
+    }
+
+    @Override
+    public int getHeight() {
+        return HEIGHT;
     }
 
 }
